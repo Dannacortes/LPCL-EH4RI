@@ -3,6 +3,7 @@ using Prueba;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,113 +15,150 @@ namespace ConsoleApp1
     {
         public List<Negocio> negocios = new List<Negocio>();
 
-        public  P4RI()
+        public P4RI()
         {
+
             int eleccionUsuario;
             Console.WriteLine("BIENVENIDO");
-            Console.WriteLine("Ingrese una de las siguientes opciones \n 1.Ingrese un nuevo proyecto \n" +
-                "2. Agrega integrantes \n 3. Eliminar integrantes \n 4. Modificar inversión \n 5. Mostrar Estadisticas ");
-            eleccionUsuario = Convert.ToInt16(Console.ReadLine());
-
-            if (eleccionUsuario == 1)
+            bool continuar = true;
+            while (continuar)
             {
-                string controlador = "*";
+                Console.WriteLine("Ingrese una de las siguientes opciones\n 0. para cerrar la aplicacion \n 1.Ingrese un nuevo proyecto \n" +
+               "2. seleccionar un negocio\n 3. Eliminar integrantes \n 4. Modificar inversión \n 5. Mostrar Estadisticas ");
+                eleccionUsuario = Convert.ToInt16(Console.ReadLine());
 
-                while (controlador == "*")
+                if (eleccionUsuario == 1)
                 {
-                    string nombreIdea, impactoSocial, departamentoBeneficiado;
-                    double valorInversion, ingresosProyecto;
-                    int cantidadIntegrantes, cantidadDepartamentosBenef;
-                    Console.WriteLine("Ingrese el nombre de la idea de negocio: ");
-                    nombreIdea = Console.ReadLine();
-                    Console.WriteLine("Ingrese el impacto social o economico que tiene el negocio: ");
-                    impactoSocial = Console.ReadLine();
-                    Console.WriteLine("Ingrese el valor a invertir del Proyecto: ");
-                    valorInversion = Convert.ToDouble(Console.ReadLine());
-                    Console.WriteLine("Ingrese el valor de ingresos del Proyecto: ");
-                    ingresosProyecto = Convert.ToDouble(Console.ReadLine());
-                    Console.WriteLine("Ingrese la cantidad de integrantes del proyecto: ");
-                    cantidadIntegrantes = Convert.ToInt16(Console.ReadLine());
+                    IngresarProyecto();
+                }
+                else if (eleccionUsuario == 2)
+                {
 
-                    string nombre, apellido, identificacion, rol, email;
-                    List<Integrante> integrantes = new List<Integrante>();
-                    for (int i = 0; i < cantidadIntegrantes; i++)
+                    //IngresarIntegrantes(cantidadIntegrantes);
+                    int codigoIngresado;
+                    Console.WriteLine("Ingrese el codigo del proyecto: ");
+                    codigoIngresado = int.Parse(Console.ReadLine());
+                    var negocioElegido = (from negocio in negocios where negocio.Codigo == codigoIngresado select negocio).FirstOrDefault();
+                    if(negocioElegido != default)
                     {
-                        Console.WriteLine("Ingrese el nombre del Integrante: ");
-                        nombre = Console.ReadLine();
-                        Console.WriteLine("Ingrese el apellido del Integrante: ");
-                        apellido = Console.ReadLine();
-                        Console.WriteLine("Ingrese la identificación del Integrante: ");
-                        identificacion = Console.ReadLine();
-                        Console.WriteLine("Ingrese el rol en el emprendimiento: ");
-                        rol = Console.ReadLine();
-                        Console.WriteLine("Ingrese el email del integrante: ");
-                        email = Console.ReadLine();
-                        var nuevoIntegrante = new Integrante(nombre, apellido, identificacion, rol, email);
-                        integrantes.Add(nuevoIntegrante);
-
+                        menuNegocio(negocioElegido);
                     }
-                    List<Departamento> departamentos = new List<Departamento>();
-                    string nombreDep, codigoDep;
-                    Console.WriteLine("Cuantos departamentos seran beneficiados con esta idea: ");
-                    cantidadDepartamentosBenef = Convert.ToInt16(Console.ReadLine());
-                    for (int i = 0; i < cantidadDepartamentosBenef; i++)
-                    {
-                        Console.WriteLine("Ingrese el nombre del departamento: ");
-                        nombreDep = Console.ReadLine();
-                        Console.WriteLine("Ingrese el codigo del departamento: ");
-                        codigoDep = Console.ReadLine();
-                        departamentoBeneficiado = Console.ReadLine();
-                        var nuevoDep = new Departamento(nombreDep, codigoDep);
-                        departamentos.Add(nuevoDep);
+                }
+                else if (eleccionUsuario == 5)
+                {
 
-                    }
-                    List<string> herramientas = new List<string>();
-                    int cantidadHerramientas;
-                    string herramienta4RI;
-                    Console.WriteLine("Ingrese la cantidad de Herramientas de la 4RI: ");
-                    cantidadHerramientas = Convert.ToInt16(Console.ReadLine());
-                    for (int i = 0; i < cantidadHerramientas; i++)
-                    {
-                        Console.WriteLine("Ingrese la Herramienta utilizada en su emprendimiento: ");
-                        herramienta4RI = Console.ReadLine();
+                    estadisticas();
 
-                        herramientas.Add(herramienta4RI);
-
-                    }
-
-                    var nuevoNegocio = new Negocio(nombreIdea, impactoSocial, valorInversion, ingresosProyecto, integrantes, departamentos, herramientas);
-                    negocios.Add(nuevoNegocio);
-
-
-
-                    Console.WriteLine("Desea agregar mas proyectos presione cualquier tecla" +
-                        ", para detenerse presione * ");
-                    controlador = Console.ReadLine();
 
                 }
-
+                else if (eleccionUsuario == 0)
+                {
+                    continuar = false;
+                }
             }
-            else if (eleccionUsuario == 2)
+           
+
+
+        }
+        public List<string> IngresarHerramientas4RI(int cantidadHerramientas)
+        {
+            List<string> ListaHerramientas = new();
+            string herramienta4RI;
+            
+            for (int i = 0; i < cantidadHerramientas; i++)
             {
-                string codigoIngresado;
-                Console.WriteLine("Ingrese el codigo del proyecto: ");
-                codigoIngresado = Convert.ToInt64(Console.ReadLine());
-                var codigoIgual = (from negocio in negocios where negocio.Codigo = codigoIngresado select negocio);
+                Console.WriteLine("Ingrese la Herramienta utilizada en su emprendimiento: ");
+                herramienta4RI = Console.ReadLine();
+                ListaHerramientas.Add(herramienta4RI);
 
             }
-            else if (eleccionUsuario == 5) {
+            return ListaHerramientas;
 
-                estadisticas();
-            
-            
+        }
+        public List<Departamento>  IngresarDepartamentos(int cantidadDepartamentos)
+        {
+            List<Departamento> ListaDepartamentos = new ();
+            string departamentoBeneficiado;
+            string nombreDep, codigoDep;
+
+            for (int i = 0; i < cantidadDepartamentos; i++)
+            {
+                Console.WriteLine("Ingrese el nombre del departamento: ");
+                nombreDep = Console.ReadLine();
+                Console.WriteLine("Ingrese el codigo del departamento: ");
+                codigoDep = Console.ReadLine();
+                departamentoBeneficiado = Console.ReadLine();
+                var nuevoDep = new Departamento(nombreDep, codigoDep);
+                ListaDepartamentos.Add(nuevoDep);
             }
-            
+            return ListaDepartamentos;
 
+        }
+        public void menuNegocio(Negocio negocioActual)
+        {
+            bool menu = true;
+            while (menu)
+            {
+                // Va a ir el menu donde tiene todo lo de negocio, agregar integrantes, modificar, etc 
 
+                List<Departamento> nuevosDepa = IngresarDepartamentos(cantidad);
+                negocioActual.ListaDepartamentos.AddRange(nuevosDepa);
+
+            }
+        }
+    public List<Integrante> IngresarIntegrantes(int cantidad)
+    {
+        List<Integrante> listaIntegrantes = new();
+        string nombre, identificacion, apellido, rol, email;
+        for (int i = 0; i < cantidad; i++)
+        {
+            Console.WriteLine("Ingrese el nombre del Integrante: ");
+            nombre = Console.ReadLine();
+            Console.WriteLine("Ingrese el apellido del Integrante: ");
+            apellido = Console.ReadLine();
+            Console.WriteLine("Ingrese la identificación del Integrante: ");
+            identificacion = Console.ReadLine();
+            Console.WriteLine("Ingrese el rol en el emprendimiento: ");
+            rol = Console.ReadLine();
+            Console.WriteLine("Ingrese el email del integrante: ");
+            email = Console.ReadLine();
+            var nuevoIntegrante = new Integrante(nombre, apellido, identificacion, rol, email);
+            listaIntegrantes.Add(nuevoIntegrante);
+
+        }
+        return listaIntegrantes;
     }
-      
-        
+
+
+
+        public void IngresarProyecto()
+        {
+            string nombreIdea, impactoSocial;
+            double valorInversion, ingresosProyecto;
+            int cantidadIntegrantes, cantidadDepartamentosBenef, cantidadDepartamentos, cantidadHerramientas;
+            Console.WriteLine("Ingrese el nombre de la idea de negocio: ");
+            nombreIdea = Console.ReadLine();
+            Console.WriteLine("Ingrese el impacto social o economico que tiene el negocio: ");
+            impactoSocial = Console.ReadLine();
+            Console.WriteLine("Ingrese el valor a invertir del Proyecto: ");
+            valorInversion = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Ingrese el valor de ingresos del Proyecto: ");
+            ingresosProyecto = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Ingrese la cantidad de estudiantes");
+            cantidadIntegrantes = int.Parse(Console.ReadLine());
+            List<Integrante> integrantes = IngresarIntegrantes(cantidadIntegrantes);
+            Console.WriteLine("Ingrese la cantidad de departamentos");
+            cantidadDepartamentos = int.Parse(Console.ReadLine());
+            List<Departamento> departamentos = IngresarDepartamentos(cantidadDepartamentos);
+            Console.WriteLine("Ingrese la cantidad de herramientas");
+            cantidadHerramientas = int.Parse(Console.ReadLine());
+            List<string> herramientas = IngresarHerramientas4RI(cantidadHerramientas);
+            Negocio nuevoNegocio = new Negocio(nombreIdea,impactoSocial,valorInversion,ingresosProyecto,integrantes,departamentos,herramientas);
+            negocios.Add(nuevoNegocio);
+
+        } 
+ 
+
         public void estadisticas()
 
         {
