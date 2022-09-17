@@ -18,8 +18,11 @@ namespace LPCL_CodigoLimpio_ProyectoNumero1
             bool continuar = true;
             while (continuar)
             {
-                Console.WriteLine("Ingrese una de las siguientes opciones\n 0. para cerrar la aplicacion \n 1.Ingrese un nuevo proyecto \n" +
-               "2. Acceder a  un negocio existente \n 3. Mostrar Estadisticas ");
+                Console.WriteLine("Ingrese una de las siguientes opciones\n" +
+                    "0. para cerrar la aplicacion \n" +
+                    "1. Ingrese un nuevo proyecto\n" + 
+                    "2. Acceder a  un negocio existente \n" +
+                    "3. Mostrar Estadisticas");
                 eleccionUsuario = Convert.ToInt16(Console.ReadLine());
 
                 if (eleccionUsuario == 1)
@@ -97,8 +100,12 @@ namespace LPCL_CodigoLimpio_ProyectoNumero1
                 // Va a ir el menu donde tiene todo lo de negocio, agregar integrantes, modificar, etc 
 
                 int seleccionMenu;
-                Console.WriteLine("Ingrese 1. Agregar un nuevo integrante  \n 2. Eliminar un integrante existente \n 3. Modificar valor de inversión y total de ingresos");
+                Console.WriteLine("Ingrese: \n 0. Volver al menu anterior \n 1. Agregar un nuevo integrante  \n 2. Eliminar un integrante existente \n 3. Modificar valor de inversión y total de ingresos");
                 seleccionMenu = Convert.ToInt16(Console.ReadLine());
+                if (seleccionMenu == 0)
+                {
+                    return;
+                }
                 if (seleccionMenu == 1)
                 {
                     int cantidad;
