@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "LPCL_CodigoLimpio_ProyectoNumero1/1.0.0": {
+        "runtime": {
+          "LPCL_CodigoLimpio_ProyectoNumero1.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LPCL_CodigoLimpio_ProyectoNumero1/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
